@@ -55,5 +55,5 @@ Utilisez des variables d'environnement ou un fichier `.env` pour stocker ces inf
 Ce projet est sous licence MIT. Vous êtes libre de l'utiliser et de le modifier.
 
 ## Auteurs
-- [Votre Nom](https://github.com/votre-utilisateur)
+- [Votre Nom](https://github.com/Nuskyy)
 

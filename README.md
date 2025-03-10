@@ -21,7 +21,7 @@ Avant d'exécuter le bot, assurez-vous d'avoir :
 ## Installation
 1. Clonez le dépôt :
    ```sh
-   git clone https://github.com/votre-utilisateur/votre-repo.git
+   git clone https://github.com/Nuskyy/StreamTracker.git
    cd votre-repo
    ```
 2. Installez les dépendances :

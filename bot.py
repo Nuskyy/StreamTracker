@@ -95,24 +95,40 @@ async def check_streams():
         response = requests.get(stream_url, headers=headers)
         
         if response.status_code != 200:
+            print(f"Erreur HTTP pour {username}: {response.status_code}")
             continue
 
         try:
             data = response.json()
-        except ValueError:
+        except ValueError as e:
+            print(f"Erreur JSON pour {username}: {e}")
             continue
 
         if data.get('data'):
+            stream_data = data['data'][0]
+            game_id = stream_data.get("game_id", "")
+            thumbnail_url = stream_data.get("thumbnail_url", "").replace("{width}", "1280").replace("{height}", "720")
+            game_name = ""
+
+            if game_id:
+                game_url = f"https://api.twitch.tv/helix/games?id={game_id}"
+                game_response = requests.get(game_url, headers=headers)
+                if game_response.status_code == 200:
+                    game_data = game_response.json()
+                    if game_data.get("data"):
+                        game_name = game_data["data"][0].get("name", "")
+
             if not is_live_states[username]:
                 is_live_states[username] = True
                 channel = bot.get_channel(DISCORD_CHANNEL_ID)
                 if channel:
                     embed = discord.Embed(
-                        title=f"{username} est en live sur Twitch",
-                        description=f"🎮 {info['description']}\n🔴 Regardez ici : [Twitch](https://www.twitch.tv/{username})",
+                        title=f"{username} est en live sur Twitch!",
+                        description=f"{info['description']}\n 🎮 Jeu: {game_name}\n🔴 Regardez ici : [Twitch](https://www.twitch.tv/{username})",
                         color=discord.Color.green()
                     )
-                    await channel.send(content="@everyone", embed=embed)
+                    embed.set_image(url=thumbnail_url)
+                    await channel.send(embed=embed)
         else:
             is_live_states[username] = False
 

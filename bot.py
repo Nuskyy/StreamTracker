@@ -107,7 +107,8 @@ async def check_streams():
         if data.get('data'):
             stream_data = data['data'][0]
             game_id = stream_data.get("game_id", "")
-            thumbnail_url = stream_data.get("thumbnail_url", "").replace("{width}", "1280").replace("{height}", "720")
+            timestamp = int(time.time())
+            thumbnail_url = stream_data.get("thumbnail_url", "").replace("{width}", "1280").replace("{height}", "720") + f"?t={timestamp}"
             game_name = ""
 
             if game_id:
